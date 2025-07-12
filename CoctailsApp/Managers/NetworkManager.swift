@@ -48,6 +48,5 @@ final class NetworkManager: INetworkManager {
                     completion(.failure(error))
                 }
             }
-        
     }
 }
