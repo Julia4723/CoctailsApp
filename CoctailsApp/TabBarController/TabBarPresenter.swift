@@ -47,10 +47,14 @@ extension TabBarPresenter: ITabBarViewPresenter {
         mainAssembly.configure(viewController: mainVC)
         let mainNav = UINavigationController(rootViewController: mainVC)
 
+        
         // Сборка Search (если появится Assembly, заменить)
         let searchVC = SearchViewController()
+        let searchAssembly = SearchAccembly(navigationController: navigationController, authService: authService, network: network)
+        searchAssembly.configure(viewController: searchVC)
         let searchNav = UINavigationController(rootViewController: searchVC)
 
+        
         // Сборка Profile
         let profileVC = ProfileViewController()
         let profileAssembly = ProfileAssembly(navigationController: navigationController, authService: authService)

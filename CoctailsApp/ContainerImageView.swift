@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
  
 
 
@@ -22,11 +23,21 @@ final class ContainerImageView: UIView {
     }
     
     func configure(urlImage: String) {
-        
+        fetchImage(image: urlImage)
     }
     
     private func fetchImage(image: String) {
-        
+        let url = URL(string: image)
+        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 300))
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(
+            with: url,
+            options: [
+                .processor(processor),
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(1)),
+                .cacheOriginalImage
+            ])
     }
     
     private func setup() {

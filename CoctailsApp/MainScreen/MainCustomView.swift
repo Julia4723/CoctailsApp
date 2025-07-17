@@ -24,9 +24,12 @@ final class MainCustomView: UIView {
     }
     
     func configure(model: Cocktail) {
-        titleLabel.text = model.strGlass
-        descriptionLabel.text = model.strCategory
-        imageView.configure(urlImage: model.strDrinkThumb ?? "") //кажется у модели нет картинок, првоерить
+//        titleLabel.text = model.title
+//        descriptionLabel.text = model.description
+//        imageView.configure(urlImage: model.image ?? "")
+        titleLabel.text = model.strDrink
+        descriptionLabel.text = "Category \(String(describing: model.strCategory))"
+        imageView.configure(urlImage: model.strDrinkThumb ?? "")
         
     }
 }
@@ -51,13 +54,13 @@ private extension MainCustomView {
 
 private extension MainCustomView {
     func setupTitleLabel() {
-        titleLabel.font = .systemFont(ofSize: 24, weight: .medium)
+        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
         titleLabel.textColor = .black
     }
     
     func setupDescription() {
-        titleLabel.font = .systemFont(ofSize: 17, weight: .regular)
-        titleLabel.textColor = .black
+        descriptionLabel.font = .systemFont(ofSize: 17, weight: .regular)
+        descriptionLabel.textColor = .systemGray
     }
     
     func setupImage() {
@@ -75,18 +78,15 @@ private extension MainCustomView {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            imageView.widthAnchor.constraint(equalToConstant: 100),
-            imageView.heightAnchor.constraint(equalToConstant: 100),
-            
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8),
-            titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             
             
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 20)
-            
         ])
     }
 }

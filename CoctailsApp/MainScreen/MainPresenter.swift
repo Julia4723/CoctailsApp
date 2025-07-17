@@ -7,21 +7,24 @@
 
 import UIKit
 
+struct MainModel {
+    let title: String?
+    let description: String?
+    let image: String?
+}
+
 protocol IMainPresenter {
-    var view: IMainViewController? {get set}
-    var cocktails: [Cocktail] { get }
+    func showScene(_ index: Int)
+    func render()
     func fetchFromStorage()
 }
 
 
 final class MainPresenter: IMainPresenter {
-    
-    
     weak var view: IMainViewController?
     private let network: INetworkManager
     private let router: IBaseRouter
-    
-    private(set) var cocktails: [Cocktail] = []
+    private var cocktails: [Cocktail] = []
     
     
     init(view: IMainViewController, router: IBaseRouter, network: INetworkManager) {
@@ -36,7 +39,7 @@ final class MainPresenter: IMainPresenter {
             case .success(let success):
                 self?.cocktails = success
                 DispatchQueue.main.async {
-                    self?.view?.updateView()
+                    self?.view?.configure(items: success)
                 }
             case .failure(let failure):
                 self?.view?.showError(error: failure)
@@ -44,6 +47,15 @@ final class MainPresenter: IMainPresenter {
         }
     }
     
+  
+    
+    func showScene(_ index: Int) {
+        router.routeTo(target: BaseRouter.Target.detailsVC(item: cocktails[index]))
+    }
+    
+    func render() {
+        view?.configure(items: cocktails)
+    }
 }
 
 extension MainPresenter {

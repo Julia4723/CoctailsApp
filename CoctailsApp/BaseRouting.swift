@@ -15,6 +15,7 @@ final class BaseRouter {
         case main
         case popToRoot
         case signUpVC
+        case detailsVC(item: Cocktail)
     }
     
     private let navigationController: UINavigationController
@@ -43,7 +44,6 @@ extension BaseRouter: IBaseRouter {
             
         case .main:
             let tabBar = TabBarController()
-            let network = NetworkManager.shared
             let tabBarAssembly = TabBarAssembly(navigationController: navigationController, authService: authService)
             tabBarAssembly.configure(viewController: tabBar)
             navigationController.setViewControllers([tabBar], animated: true)
@@ -57,6 +57,12 @@ extension BaseRouter: IBaseRouter {
        
         case .popToRoot:
             navigationController.popToRootViewController(animated: true)
+        case .detailsVC(item: let item):
+            let detailVC = DetailsViewController()
+            let detailAssembly = DetailsViewAssembly(navigationController: navigationController, authService: authService, item: item)
+            detailAssembly.configure(viewController: detailVC)
+            detailVC.modalPresentationStyle = .fullScreen
+            navigationController.pushViewController(detailVC, animated: true)
         }
     }
 }

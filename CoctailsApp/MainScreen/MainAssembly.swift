@@ -11,8 +11,8 @@ import UIKit
 final class MainAssembly {
     
     private let navigationController: UINavigationController
-    let authService: AuthService
-    let network: INetworkManager
+    private let authService: AuthService
+    private let network: INetworkManager
     init(navigationController: UINavigationController, authService: AuthService, network: INetworkManager) {
         self.navigationController = navigationController
         self.authService = authService

@@ -14,7 +14,6 @@ protocol IModelManager {
 
 
 final class ModelManagerStub: IModelManager {
-    
     private var registerUserList: [RegisterUserRequest] = []
     private var loginUserList: [LoginUserRequest] = []
     

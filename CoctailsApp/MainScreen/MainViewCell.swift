@@ -23,8 +23,6 @@ final class MainViewCell: UITableViewCell {
     func configure(model: Cocktail) {
         customView.configure(model: model)
     }
-    
-
 }
 
 
@@ -42,10 +40,11 @@ private extension MainViewCell {
         customView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            customView.heightAnchor.constraint(equalToConstant: 360),
         ])
     }
 }
