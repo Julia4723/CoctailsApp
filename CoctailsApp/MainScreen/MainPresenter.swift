@@ -17,10 +17,12 @@ protocol IMainPresenter {
     func showScene(_ index: Int)
     func render()
     func fetchFromStorage()
+    func showNewCocktailVC()
 }
 
 
-final class MainPresenter: IMainPresenter {
+final class MainPresenter {
+    
     weak var view: IMainViewController?
     private let network: INetworkManager
     private let router: IBaseRouter
@@ -32,7 +34,9 @@ final class MainPresenter: IMainPresenter {
         self.router = router
         self.network = network
     }
-    
+}
+
+extension MainPresenter: IMainPresenter {
     func fetchFromStorage() {
         self.network.fetchAF { [weak self] result in
             switch result {
@@ -47,8 +51,6 @@ final class MainPresenter: IMainPresenter {
         }
     }
     
-  
-    
     func showScene(_ index: Int) {
         router.routeTo(target: BaseRouter.Target.detailsVC(item: cocktails[index]))
     }
@@ -56,10 +58,10 @@ final class MainPresenter: IMainPresenter {
     func render() {
         view?.configure(items: cocktails)
     }
-}
-
-extension MainPresenter {
     
-    
+    func showNewCocktailVC() {
+        print("Presenter: showNewCocktailVC")
+        router.routeTo(target: BaseRouter.Target.newCocktailVC)
+    }
     
 }

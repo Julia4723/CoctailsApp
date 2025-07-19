@@ -74,6 +74,7 @@ final class MainViewController: UITableViewController {
     
     @objc func addButtonTapped() {
         print("tapped")
+        presenter.showNewCocktailVC()
     }
 }
 

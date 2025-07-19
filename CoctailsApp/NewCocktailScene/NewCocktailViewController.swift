@@ -16,6 +16,8 @@ protocol INewCocktailViewController: AnyObject {
 
 final class NewCocktailViewController: UIViewController {
     
+    var presenter: INewCocktailPresenter?
+    
     private let textFieldName = TextFieldFactory.makeTextField(placeholder: "Name")
     private let textFieldInstruction = TextFieldFactory.makeTextField(placeholder: "Instruction")
     private let saveButton = CustomButton(title: "Save", hasBackground: true, fontSize: FontSize.middle)
