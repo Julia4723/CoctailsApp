@@ -9,20 +9,41 @@ import UIKit
 
 protocol IDetailsViewController: AnyObject {
     func configure(item: DetailsModel)
+    func configureIngredients(array: [String])
 }
 
 final class DetailsViewController: UIViewController {
     var presenter: IDetailsViewPresenter!
     
     private let imageView = ContainerImageView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let titleText = UILabel.makeLabel(text: "Title", font: UIFont.systemFont(ofSize: 32, weight: .bold), textColor: .black)
-    private let descriptionText = UILabel.makeLabel(text: "Description", font: UIFont.systemFont(ofSize:17, weight: .regular), textColor: .black)
-    private let ingredientsText = UILabel.makeLabel(text: "Ingr", font: UIFont.systemFont(ofSize:17, weight: .regular), textColor: .black)
+    private let instructionText = UILabel.makeLabel(text: "Description", font: UIFont.systemFont(ofSize:17, weight: .regular), textColor: .black)
+    private let tableView = UITableView()
+    private var arrayIngredients: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupTableView()
         presenter.render()
+        presenter.renderIngredients()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height).isActive = true
+    }
+
+    
+    private func setupTableView() {
+        tableView.backgroundColor = .systemBackground
+        tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
     }
     
 }
@@ -35,24 +56,58 @@ private extension DetailsViewController {
     }
     
     func addSubViews() {
-        view.addViews(imageView, titleText, descriptionText, ingredientsText)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addViews(imageView, titleText, instructionText, tableView)
+    }
+}
+
+extension DetailsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        arrayIngredients.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        content.textProperties.color = .black
+        content.textProperties.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        content.text = arrayIngredients[indexPath.row]
+        cell.contentConfiguration = content
+        return cell
+        
     }
 }
 
 private extension DetailsViewController {
     func setupLayout() {
         [
+            scrollView,
+            contentView,
             imageView,
             titleText,
-            descriptionText,
-            ingredientsText
+            instructionText,
+            tableView
         ].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
         }
         NSLayoutConstraint.activate([
-            titleText.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
-            titleText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            titleText.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            titleText.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor, constant: 24),
+            titleText.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            titleText.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             
             imageView.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 32),
             imageView.leadingAnchor.constraint(equalTo: titleText.leadingAnchor),
@@ -60,25 +115,28 @@ private extension DetailsViewController {
             imageView.heightAnchor.constraint(equalToConstant: 300),
             
             
-            descriptionText.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
-            descriptionText.leadingAnchor.constraint(equalTo: titleText.leadingAnchor),
-            descriptionText.trailingAnchor.constraint(equalTo: titleText.trailingAnchor),
+            instructionText.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
+            instructionText.leadingAnchor.constraint(equalTo: titleText.leadingAnchor),
+            instructionText.trailingAnchor.constraint(equalTo: titleText.trailingAnchor),
             
-            ingredientsText.topAnchor.constraint(equalTo: descriptionText.bottomAnchor, constant: 12),
-            ingredientsText.leadingAnchor.constraint(equalTo: descriptionText.leadingAnchor),
-            ingredientsText.trailingAnchor.constraint(equalTo: descriptionText.trailingAnchor)
+            tableView.topAnchor.constraint(equalTo: instructionText.bottomAnchor, constant: 12),
+            tableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 }
 
 
 extension DetailsViewController: IDetailsViewController {
-    func configure(item: DetailsModel) {
-        titleText.text = item.title
-        descriptionText.text = item.description
-        ingredientsText.text = item.ingredient.joined(separator: "\n")
-        imageView.configure(urlImage: item.image ?? "")
+    func configureIngredients(array: [String]) {
+        arrayIngredients = array
+        tableView.reloadData()
     }
     
-    
+    func configure(item: DetailsModel) {
+        titleText.text = item.title
+        instructionText.text = item.instruction
+        imageView.configure(urlImage: item.image ?? "")
+    }
 }

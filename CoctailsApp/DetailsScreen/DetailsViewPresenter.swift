@@ -10,12 +10,12 @@ import UIKit
 struct DetailsModel {
     let image: String?
     let title: String?
-    let description: String?
-    let ingredient: [String]
+    let instruction: String?
 }
 
 protocol IDetailsViewPresenter {
     func render()
+    func renderIngredients()
 }
 
 final class DetailsViewPresenter {
@@ -33,13 +33,22 @@ final class DetailsViewPresenter {
     }
     
     private func getDetails() -> DetailsModel {
-        let detailItem = DetailsModel(image: model.strDrinkThumb, title: model.strDrink, description: model.strCategory, ingredient: model.ingredients)
+        let detailItem = DetailsModel(image: model.strDrinkThumb, title: model.strDrink, instruction: model.strInstructions)
         return detailItem
+    }
+    
+    private func getIngredients() -> [String] {
+        let arrayIngredients: [String] = model.ingredients
+        return arrayIngredients
     }
 }
 
 
 extension DetailsViewPresenter: IDetailsViewPresenter {
+    func renderIngredients() {
+        view.configureIngredients(array: getIngredients())
+    }
+    
     func render() {
         view.configure(item: getDetails())
     }

@@ -9,7 +9,7 @@ import UIKit
 
 protocol ISearchViewController: AnyObject {
     func showSearchResult(_ results: [Cocktail])
-   
+    func configure(items:[Cocktail])
 }
 
 
@@ -18,7 +18,7 @@ final class SearchViewController: UITableViewController {
     var presenter: ISearchPresenter!
     private var networkManager = NetworkManager.shared
     private var filteredModel: [Cocktail] = []
-    
+    private var items: [Cocktail] = []
     private let cellIdentifier = "cell"
     private let searchController = UISearchController(searchResultsController: nil)
     var isSearchBarEmpty: Bool {
@@ -35,6 +35,7 @@ final class SearchViewController: UITableViewController {
         view.backgroundColor = .systemBackground
         tableView.register(MainViewCell.self, forCellReuseIdentifier: cellIdentifier)
         setupSearchController()
+        presenter.render()
     }
 }
 
@@ -56,14 +57,23 @@ extension SearchViewController {
         
         if let item = isFiltering ? filteredModel[indexPath.row] : presenter?.cocktails[indexPath.row] {
             cell.configure(model: item)
-            
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        presenter.showScene(indexPath.row)
     }
 }
 
 
 extension SearchViewController: ISearchViewController, UISearchResultsUpdating {
+    func configure(items: [Cocktail]) {
+        filteredModel = items
+        tableView.reloadData()
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         presenter.search(for: searchController.searchBar.text ?? "")
     }

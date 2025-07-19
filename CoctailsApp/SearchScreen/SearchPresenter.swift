@@ -11,15 +11,14 @@ protocol ISearchPresenter {
     func search(for searchQuery: String)
     func filterContentForSearchText(_ searchText: String)
     var cocktails: [Cocktail] { get }
+    func showScene(_ index: Int)
+    func render()
 }
 
 final class SearchPresenter {
     weak var view: ISearchViewController?
-    var filteredModel: [Cocktail] = []
-    
-    private(set) var cocktails: [Cocktail] = []
-    
-    
+    private var filteredModel: [Cocktail] = []
+    var cocktails: [Cocktail] = []
     private let router: IBaseRouter
     private var networkManager = NetworkManager.shared
     private let authService: AuthService
@@ -45,7 +44,7 @@ extension SearchPresenter: ISearchPresenter {
     
     func search(for searchQuery: String) {
         guard !searchQuery.isEmpty else {
-            filteredModel = []
+            view?.showSearchResult(cocktails)
             return
         }
         networkManager.name = searchQuery
@@ -54,7 +53,6 @@ extension SearchPresenter: ISearchPresenter {
                 switch result {
                 case .success(let success):
                     self?.filteredModel = success
-                    //self?.filterContentForSearchText(searchQuery)
                     self?.view?.showSearchResult(success)
                     print("Найдено: \(success.count) элементов")
                 case .failure(let failure):
@@ -64,5 +62,14 @@ extension SearchPresenter: ISearchPresenter {
             }
         }
     }
+    
+    func render() {
+        view?.configure(items: cocktails)
+    }
+    
+    func showScene(_ index: Int) {
+        router.routeTo(target: BaseRouter.Target.detailsVC(item: filteredModel[index]))
+    }
+    
 }
 
