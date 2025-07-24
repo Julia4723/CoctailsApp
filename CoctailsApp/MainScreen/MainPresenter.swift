@@ -58,7 +58,7 @@ extension MainPresenter: IMainPresenter {
             case .success(let success):
                 self?.cocktails = success
                 DispatchQueue.main.async {
-                    self?.view?.configureCoctailModel(items: success)
+                    self?.view?.configureCocktailModel(items: success)
                 }
             case .failure(let failure):
                 self?.view?.showError(error: failure)
@@ -71,7 +71,7 @@ extension MainPresenter: IMainPresenter {
     }
     
     func render() {
-        view?.configureCoctailModel(items: cocktails)
+        view?.configureCocktailModel(items: cocktails)
         view?.configureCoreModel(items: coreItems)
     }
     

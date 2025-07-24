@@ -8,9 +8,8 @@
 import UIKit
 
 protocol IMainViewController: AnyObject {
-    func updateView()
     func showError(error: Error)
-    func configureCoctailModel(items: [Cocktail])
+    func configureCocktailModel(items: [Cocktail])
     func configureCoreModel(items: [CocktailItem])
 }
 
@@ -133,11 +132,7 @@ extension MainViewController {
         } else {
             let item = coreItems[indexPath.row]
             cell.configureCoreModel(model: item)
-            
         }
-        
-//        let item = items[indexPath.row]
-//        cell.configureCocktailModel(model: item)
         return cell
     }
     
@@ -154,16 +149,12 @@ extension MainViewController: IMainViewController {
         tableView.reloadData()
     }
     
-    func configureCoctailModel(items: [Cocktail]) {
+    func configureCocktailModel(items: [Cocktail]) {
         self.items = items
         tableView.reloadData()
     }
     
     func showError(error: any Error) {
         print(error)
-    }
-    
-    func updateView() {
-        tableView.reloadData()
     }
 }

@@ -9,7 +9,6 @@ import UIKit
 
 final class MainCustomView: UIView {
     
-    
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let imageView = ContainerImageView()
@@ -23,10 +22,13 @@ final class MainCustomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func prepareForReuse() {
+        titleLabel.text = nil
+        descriptionLabel.text = nil
+        imageView.prepareForReuse()
+    }
+    
     func configureCocktailModel(model: Cocktail) {
-//        titleLabel.text = model.title
-//        descriptionLabel.text = model.description
-//        imageView.configure(urlImage: model.image ?? "")
         titleLabel.text = model.strDrink
         descriptionLabel.text = model.strCategory
         imageView.configure(urlImage: model.strDrinkThumb ?? "")

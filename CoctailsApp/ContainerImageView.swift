@@ -25,6 +25,10 @@ final class ContainerImageView: UIView {
         fetchImage(image: urlImage)
     }
     
+    func prepareForReuse() {
+        imageView.image = nil
+    }
+    
     private func fetchImage(image: String) {
         let url = URL(string: image)
         let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 300))

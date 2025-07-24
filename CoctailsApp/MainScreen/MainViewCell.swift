@@ -20,6 +20,11 @@ final class MainViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        customView.prepareForReuse()
+    }
+    
     func configureCocktailModel(model: Cocktail) {
         customView.configureCocktailModel(model: model)
     }
