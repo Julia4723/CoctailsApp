@@ -8,7 +8,8 @@
 import UIKit
 
 protocol INewCocktailPresenter {
-    
+    func save(title: String, instruction: String)
+    func didTapCloseButton()
 }
 
 
@@ -28,5 +29,21 @@ final class NewCocktailPresenter {
 
 
 extension NewCocktailPresenter: INewCocktailPresenter {
+    func save(title: String, instruction: String) {
+        print("Saving cocktail: \(title), \(instruction)")
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+        let entity = CocktailItem(context: context)
+        entity.title = title
+        entity.instruction = instruction
+        
+        CoreDataManager.shared.saveContext()
+        NotificationCenter.default.post(name: .didAddNewCocktail, object: nil)
+        
+    }
+    
+    func didTapCloseButton() {
+        print("didTapCloseButton")
+        router.routeTo(target: BaseRouter.Target.popToRoot)
+    }
     
 }

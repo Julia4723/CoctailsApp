@@ -26,6 +26,4 @@ extension NewCocktailAssembly: BaseAssembly {
         let presenter = NewCocktailPresenter(view: newCocktailVC, authService: authService, router: router)
         newCocktailVC.presenter = presenter
     }
-    
-    
 }

@@ -29,7 +29,6 @@ final class NewCocktailViewController: UIViewController {
         setupView()
     }
     
-    
 }
 
 
@@ -38,6 +37,25 @@ private extension NewCocktailViewController {
         view.backgroundColor = .systemBackground
         addSubViews()
         setupLayout()
+        addAction()
+    }
+    
+    func addAction() {
+        saveButton.addTarget(self, action: #selector(buttonSaveTapped), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(buttonCloseTapped), for: .touchUpInside)
+    }
+    
+    @objc private func buttonSaveTapped() {
+        print("Save button pressed")
+        presenter?.save(
+            title: textFieldName.text ?? "",
+            instruction: textFieldInstruction.text ?? ""
+        )
+        presenter?.didTapCloseButton()
+    }
+    
+    @objc private func buttonCloseTapped() {
+        presenter?.didTapCloseButton()
     }
     
     func addSubViews() {

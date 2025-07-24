@@ -20,8 +20,12 @@ final class MainViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(model: Cocktail) {
-        customView.configure(model: model)
+    func configureCocktailModel(model: Cocktail) {
+        customView.configureCocktailModel(model: model)
+    }
+    
+    func configureCoreModel(model: CocktailItem) {
+        customView.configureCoreModel(model: model)
     }
 }
 

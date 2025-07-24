@@ -17,6 +17,7 @@ protocol IMainPresenter {
     func showScene(_ index: Int)
     func render()
     func fetchFromStorage()
+    func fetchFromCore()
     func showNewCocktailVC()
 }
 
@@ -27,6 +28,7 @@ final class MainPresenter {
     private let network: INetworkManager
     private let router: IBaseRouter
     private var cocktails: [Cocktail] = []
+    private var coreItems: [CocktailItem] = []
     
     
     init(view: IMainViewController, router: IBaseRouter, network: INetworkManager) {
@@ -37,13 +39,26 @@ final class MainPresenter {
 }
 
 extension MainPresenter: IMainPresenter {
+    func fetchFromCore() {
+        let fetch = CocktailItem.fetchRequest()
+        let context = CoreDataManager.shared
+        do {
+            coreItems = try context.persistentContainer.viewContext.fetch(fetch)
+            DispatchQueue.main.async {
+                       self.view?.configureCoreModel(items: self.coreItems)
+                   }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     func fetchFromStorage() {
         self.network.fetchAF { [weak self] result in
             switch result {
             case .success(let success):
                 self?.cocktails = success
                 DispatchQueue.main.async {
-                    self?.view?.configure(items: success)
+                    self?.view?.configureCoctailModel(items: success)
                 }
             case .failure(let failure):
                 self?.view?.showError(error: failure)
@@ -56,7 +71,8 @@ extension MainPresenter: IMainPresenter {
     }
     
     func render() {
-        view?.configure(items: cocktails)
+        view?.configureCoctailModel(items: cocktails)
+        view?.configureCoreModel(items: coreItems)
     }
     
     func showNewCocktailVC() {

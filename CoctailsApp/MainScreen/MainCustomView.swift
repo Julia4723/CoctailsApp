@@ -23,14 +23,19 @@ final class MainCustomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(model: Cocktail) {
+    func configureCocktailModel(model: Cocktail) {
 //        titleLabel.text = model.title
 //        descriptionLabel.text = model.description
 //        imageView.configure(urlImage: model.image ?? "")
         titleLabel.text = model.strDrink
-        descriptionLabel.text = "Category \(String(describing: model.strCategory))"
+        descriptionLabel.text = model.strCategory
         imageView.configure(urlImage: model.strDrinkThumb ?? "")
         
+    }
+    
+    func configureCoreModel(model: CocktailItem) {
+        titleLabel.text = model.title
+        descriptionLabel.text = model.instruction
     }
 }
 

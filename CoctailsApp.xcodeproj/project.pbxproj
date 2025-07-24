@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE813AAF2E226AF6002CA891 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CE813AAE2E226AF6002CA891 /* Kingfisher */; };
+		CE813B932E2D503B002CA891 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE813B922E2D503B002CA891 /* CoreData.framework */; };
+		CE8D96F52E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D96F42E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift */; };
+		CE8D96F62E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D96F32E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift */; };
+		CE8D96F82E31F1DC000A7DC7 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CE8D96F72E31F1DC000A7DC7 /* Kingfisher */; };
 		CE9A1EB22E225AAC00B5E527 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB12E225AAC00B5E527 /* FirebaseAuth */; };
 		CE9A1EB42E225AAC00B5E527 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB32E225AAC00B5E527 /* FirebaseCore */; };
 		CE9A1EB62E225AAC00B5E527 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB52E225AAC00B5E527 /* FirebaseDatabase */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE813B922E2D503B002CA891 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		CE8D96F32E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CocktailItem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CE8D96F42E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CocktailItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CE9A1A982E0EE0EC00B5E527 /* CoctailsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoctailsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -24,6 +30,7 @@
 		CE9A1AAA2E0EE0EE00B5E527 /* Exceptions for "CoctailsApp" folder in "CoctailsApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CocktailsModel.xcdatamodeld,
 				Info.plist,
 			);
 			target = CE9A1A972E0EE0EC00B5E527 /* CoctailsApp */;
@@ -47,9 +54,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9A1EB62E225AAC00B5E527 /* FirebaseDatabase in Frameworks */,
+				CE813B932E2D503B002CA891 /* CoreData.framework in Frameworks */,
 				CE9A1EB82E225AAC00B5E527 /* FirebaseFirestore in Frameworks */,
-				CE813AAF2E226AF6002CA891 /* Kingfisher in Frameworks */,
 				CE9A1EB42E225AAC00B5E527 /* FirebaseCore in Frameworks */,
+				CE8D96F82E31F1DC000A7DC7 /* Kingfisher in Frameworks */,
 				CE9A1EBD2E225AC400B5E527 /* Alamofire in Frameworks */,
 				CE9A1EBA2E225AAC00B5E527 /* FirebaseStorage in Frameworks */,
 				CE9A1EB22E225AAC00B5E527 /* FirebaseAuth in Frameworks */,
@@ -59,10 +67,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE813B912E2D503B002CA891 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE813B922E2D503B002CA891 /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CE9A1A8F2E0EE0EC00B5E527 = {
 			isa = PBXGroup;
 			children = (
+				CE8D96F32E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift */,
+				CE8D96F42E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift */,
 				CE9A1A9A2E0EE0EC00B5E527 /* CoctailsApp */,
+				CE813B912E2D503B002CA891 /* Frameworks */,
 				CE9A1A992E0EE0EC00B5E527 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,7 +120,7 @@
 				CE9A1EB72E225AAC00B5E527 /* FirebaseFirestore */,
 				CE9A1EB92E225AAC00B5E527 /* FirebaseStorage */,
 				CE9A1EBC2E225AC400B5E527 /* Alamofire */,
-				CE813AAE2E226AF6002CA891 /* Kingfisher */,
+				CE8D96F72E31F1DC000A7DC7 /* Kingfisher */,
 			);
 			productName = CoctailsApp;
 			productReference = CE9A1A982E0EE0EC00B5E527 /* CoctailsApp.app */;
@@ -134,7 +153,7 @@
 			packageReferences = (
 				CE9A1EB02E225AAC00B5E527 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				CE9A1EBB2E225AC400B5E527 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				CE813AAD2E226AF6002CA891 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				CE8EBB552E31E8EB00045939 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CE9A1A992E0EE0EC00B5E527 /* Products */;
@@ -161,6 +180,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8D96F52E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift in Sources */,
+				CE8D96F62E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,12 +397,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CE813AAD2E226AF6002CA891 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		CE8EBB552E31E8EB00045939 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 8.4.0;
+				minimumVersion = 8.5.0;
 			};
 		};
 		CE9A1EB02E225AAC00B5E527 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -403,9 +424,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CE813AAE2E226AF6002CA891 /* Kingfisher */ = {
+		CE8D96F72E31F1DC000A7DC7 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CE813AAD2E226AF6002CA891 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = CE8EBB552E31E8EB00045939 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 		CE9A1EB12E225AAC00B5E527 /* FirebaseAuth */ = {

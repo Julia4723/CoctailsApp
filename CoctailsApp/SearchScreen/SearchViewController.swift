@@ -56,7 +56,7 @@ extension SearchViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MainViewCell else {return UITableViewCell()}
         
         if let item = isFiltering ? filteredModel[indexPath.row] : presenter?.cocktails[indexPath.row] {
-            cell.configure(model: item)
+            cell.configureCocktailModel(model: item)
         }
         return cell
     }

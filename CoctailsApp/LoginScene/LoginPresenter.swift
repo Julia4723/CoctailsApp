@@ -26,7 +26,6 @@ final class LoginPresenter {
         self.authService = authService
         self.router = router
     }
-    
 }
 
 

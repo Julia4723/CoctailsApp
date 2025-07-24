@@ -69,6 +69,7 @@ extension BaseRouter: IBaseRouter {
         case .newCocktailVC:
             let newCocktailVC = NewCocktailViewController()
             let newCocktailAssembly = NewCocktailAssembly(navigationController: navigationController, authService: authService)
+            newCocktailAssembly.configure(viewController: newCocktailVC)
             newCocktailVC.modalPresentationStyle = .formSheet
             navigationController.pushViewController(newCocktailVC, animated: true)
         }
