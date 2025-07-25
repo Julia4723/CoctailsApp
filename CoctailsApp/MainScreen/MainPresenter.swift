@@ -19,6 +19,7 @@ protocol IMainPresenter {
     func fetchFromStorage()
     func fetchFromCore()
     func showNewCocktailVC()
+    func deleteCoreItem(at index: IndexPath)
 }
 
 
@@ -39,11 +40,20 @@ final class MainPresenter {
 }
 
 extension MainPresenter: IMainPresenter {
+    func deleteCoreItem(at index: IndexPath) {
+        let item = coreItems[index.row]
+        let coreManager = CoreDataManager.shared
+        coreManager.delete(item)
+        fetchFromCore()
+    }
+    
+    
+    
     func fetchFromCore() {
         let fetch = CocktailItem.fetchRequest()
-        let context = CoreDataManager.shared
+        let coreManager = CoreDataManager.shared
         do {
-            coreItems = try context.persistentContainer.viewContext.fetch(fetch)
+            coreItems = try coreManager.persistentContainer.viewContext.fetch(fetch)
             DispatchQueue.main.async {
                        self.view?.configureCoreModel(items: self.coreItems)
                    }

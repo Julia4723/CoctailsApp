@@ -25,7 +25,12 @@ final class ContainerImageView: UIView {
         fetchImage(image: urlImage)
     }
     
+    func configureData(data: Data) {
+        imageView.image = UIImage(data: data)
+    }
+    
     func prepareForReuse() {
+        imageView.kf.cancelDownloadTask()
         imageView.image = nil
     }
     
@@ -33,8 +38,10 @@ final class ContainerImageView: UIView {
         let url = URL(string: image)
         let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 300))
         imageView.kf.indicatorType = .activity
+        
         imageView.kf.setImage(
             with: url,
+            placeholder: UIImage(named: "placeholder"),
             options: [
                 .processor(processor),
                 .scaleFactor(UIScreen.main.scale),

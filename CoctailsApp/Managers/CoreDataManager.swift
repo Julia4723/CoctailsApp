@@ -26,10 +26,7 @@ final class CoreDataManager {
     
     
     func saveContext() {
-        guard persistentContainer.viewContext.hasChanges else {
-            print("No changes in context")
-            return
-        }
+        guard persistentContainer.viewContext.hasChanges else {return}
         
         do {
             try persistentContainer.viewContext.save()

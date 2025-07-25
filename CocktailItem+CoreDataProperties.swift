@@ -18,6 +18,7 @@ extension CocktailItem {
 
     @NSManaged public var title: String?
     @NSManaged public var instruction: String?
+    @NSManaged var imageData: Data?
 
 }
 

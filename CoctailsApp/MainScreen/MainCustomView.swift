@@ -11,7 +11,8 @@ final class MainCustomView: UIView {
     
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let imageView = ContainerImageView()
+    private var imageView = ContainerImageView()
+    private var imageFromCoreData = UIImage()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,6 +39,9 @@ final class MainCustomView: UIView {
     func configureCoreModel(model: CocktailItem) {
         titleLabel.text = model.title
         descriptionLabel.text = model.instruction
+        if let data = model.imageData {
+            imageView.configureData(data: data)
+        }
     }
 }
 
@@ -86,6 +90,7 @@ private extension MainCustomView {
             imageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            imageView.heightAnchor.constraint(equalToConstant: 300),
             
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
