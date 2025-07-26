@@ -25,8 +25,10 @@ final class ContainerImageView: UIView {
         fetchImage(image: urlImage)
     }
     
-    func configureData(data: Data) {
-        imageView.image = UIImage(data: data)
+    func configureData(data: Data?) {
+        if let data = data {
+            imageView.image = UIImage(data: data)
+        }
     }
     
     func prepareForReuse() {

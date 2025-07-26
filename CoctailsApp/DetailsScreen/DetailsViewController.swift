@@ -138,5 +138,6 @@ extension DetailsViewController: IDetailsViewController {
         titleText.text = item.title
         instructionText.text = item.instruction
         imageView.configure(urlImage: item.image ?? "")
+        imageView.configureData(data: item.imageCore)
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 
 struct DetailsModel {
     let image: String?
+    let imageCore: Data?
     let title: String?
     let instruction: String?
 }
@@ -36,12 +37,11 @@ final class DetailsViewPresenter {
     
     private func getDetails() -> DetailsModel {
         if let model = model {
-            return DetailsModel(image: model.strDrinkThumb, title: model.strDrink, instruction: model.strInstructions)
+            return DetailsModel(image: model.strDrinkThumb, imageCore: nil, title: model.strDrink, instruction: model.strInstructions)
         } else if let modelCore = modelCore {
-            //надо преобразовать data в строку
-            return DetailsModel(image: nil, title: modelCore.title, instruction: modelCore.instruction)
+            return DetailsModel(image: nil, imageCore: modelCore.imageData, title: modelCore.title, instruction: modelCore.instruction)
         } else {
-            return DetailsModel(image: nil, title: nil, instruction: nil)
+            return DetailsModel(image: nil, imageCore: nil, title: nil, instruction: nil)
         }
     }
     
