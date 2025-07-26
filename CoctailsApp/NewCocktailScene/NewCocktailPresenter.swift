@@ -9,7 +9,7 @@ import UIKit
 
 protocol INewCocktailPresenter {
     func save(title: String, instruction: String, imageView: UIImage?)
-    func didTapCloseButton()
+    func closeAddNewCocktailScreen()
 }
 
 
@@ -45,7 +45,7 @@ extension NewCocktailPresenter: INewCocktailPresenter {
         
     }
     
-    func didTapCloseButton() {
+    func closeAddNewCocktailScreen() {
         print("didTapCloseButton")
         router.routeTo(target: BaseRouter.Target.popToRoot)
     }

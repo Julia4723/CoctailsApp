@@ -14,7 +14,7 @@ struct MainModel {
 }
 
 protocol IMainPresenter {
-    func showScene(_ index: Int)
+    func showScene(_ index: Int, _ section: Int)
     func render()
     func fetchFromStorage()
     func fetchFromCore()
@@ -40,6 +40,16 @@ final class MainPresenter {
 }
 
 extension MainPresenter: IMainPresenter {
+    func showScene(_ index: Int, _ section: Int) {
+        if section == 0, index < cocktails.count {
+            let item = cocktails[index]
+            router.routeTo(target: BaseRouter.Target.detailsCocktailModelVC(item: item, itemCore: nil))
+        } else if section == 1, index < coreItems.count {
+            let item = coreItems[index]
+            router.routeTo(target: BaseRouter.Target.detailsCocktailModelVC(item: nil, itemCore: item))
+        }
+    }
+    
     func deleteCoreItem(at index: IndexPath) {
         let item = coreItems[index.row]
         let coreManager = CoreDataManager.shared
@@ -55,8 +65,8 @@ extension MainPresenter: IMainPresenter {
         do {
             coreItems = try coreManager.persistentContainer.viewContext.fetch(fetch)
             DispatchQueue.main.async {
-                       self.view?.configureCoreModel(items: self.coreItems)
-                   }
+                self.view?.configureCoreModel(items: self.coreItems)
+            }
         } catch {
             print(error.localizedDescription)
         }
@@ -76,9 +86,6 @@ extension MainPresenter: IMainPresenter {
         }
     }
     
-    func showScene(_ index: Int) {
-        router.routeTo(target: BaseRouter.Target.detailsVC(item: cocktails[index]))
-    }
     
     func render() {
         view?.configureCocktailModel(items: cocktails)

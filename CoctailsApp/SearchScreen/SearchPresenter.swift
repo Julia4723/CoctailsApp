@@ -11,6 +11,7 @@ protocol ISearchPresenter {
     func search(for searchQuery: String)
     func filterContentForSearchText(_ searchText: String)
     var cocktails: [Cocktail] { get }
+    var cocktailsCore: [CocktailItem] { get }
     func showScene(_ index: Int)
     func render()
 }
@@ -18,7 +19,9 @@ protocol ISearchPresenter {
 final class SearchPresenter {
     weak var view: ISearchViewController?
     private var filteredModel: [Cocktail] = []
+    private var filteredModelCore: [CocktailItem] = []
     var cocktails: [Cocktail] = []
+    var cocktailsCore: [CocktailItem] = []
     private let router: IBaseRouter
     private var networkManager = NetworkManager.shared
     private let authService: AuthService
@@ -36,15 +39,16 @@ extension SearchPresenter: ISearchPresenter {
         filteredModel = cocktails.filter {
             ($0.strDrink?.lowercased().contains(searchText.lowercased()) ?? false)
         }
-        view?.showSearchResult(filteredModel)
-        print("🔍 Отфильтрованные элементы: \(filteredModel)")
+        filteredModelCore = cocktailsCore.filter { ($0.title?.lowercased().contains(searchText.lowercased()) ?? false)}
+        view?.showSearchResult(filteredModel, filteredModelCore)
+        print("🔍 Отфильтрованные элементы: \(filteredModel) \(filteredModelCore)")
     }
     
     
     
     func search(for searchQuery: String) {
         guard !searchQuery.isEmpty else {
-            view?.showSearchResult(cocktails)
+            view?.showSearchResult(cocktails, cocktailsCore)
             return
         }
         networkManager.name = searchQuery
@@ -53,10 +57,12 @@ extension SearchPresenter: ISearchPresenter {
                 switch result {
                 case .success(let success):
                     self?.filteredModel = success
-                    self?.view?.showSearchResult(success)
+                    self?.filteredModelCore = self?.cocktailsCore.filter{($0.title?.lowercased().contains(searchQuery.lowercased()) ?? false)} ?? []
+                    self?.view?.showSearchResult(success, self?.filteredModelCore ?? [])
                     print("Найдено: \(success.count) элементов")
                 case .failure(let failure):
                     self?.filteredModel = []
+                    self?.filteredModelCore = []
                     print("❌ Ошибка поиска: \(failure.localizedDescription)")
                 }
             }
@@ -64,11 +70,11 @@ extension SearchPresenter: ISearchPresenter {
     }
     
     func render() {
-        view?.configure(items: cocktails)
+        view?.configure(items: cocktails, itemsCore: cocktailsCore)
     }
     
     func showScene(_ index: Int) {
-        router.routeTo(target: BaseRouter.Target.detailsVC(item: filteredModel[index]))
+        router.routeTo(target: BaseRouter.Target.detailsCocktailModelVC(item: filteredModel[index], itemCore: filteredModelCore[index]))
     }
     
 }

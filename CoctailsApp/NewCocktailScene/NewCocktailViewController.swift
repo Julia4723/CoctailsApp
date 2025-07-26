@@ -83,11 +83,11 @@ extension NewCocktailViewController {
             imageView: addImage.image
             
         )
-        presenter?.didTapCloseButton()
+        presenter?.closeAddNewCocktailScreen()
     }
     
     @objc private func buttonCloseTapped() {
-        presenter?.didTapCloseButton()
+        presenter?.closeAddNewCocktailScreen()
     }
     
     func setupAddImageView() {

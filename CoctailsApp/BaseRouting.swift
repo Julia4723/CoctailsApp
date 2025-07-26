@@ -15,7 +15,8 @@ final class BaseRouter {
         case main
         case popToRoot
         case signUpVC
-        case detailsVC(item: Cocktail)
+        case detailsCocktailModelVC(item: Cocktail?, itemCore: CocktailItem?)
+       // case detailsCoreModelVC(item: CocktailItem)
         case newCocktailVC
     }
     
@@ -59,19 +60,24 @@ extension BaseRouter: IBaseRouter {
         case .popToRoot:
             navigationController.popToRootViewController(animated: true)
         
-        case .detailsVC(item: let item):
-            let detailVC = DetailsViewController()
-            let detailAssembly = DetailsViewAssembly(navigationController: navigationController, authService: authService, item: item)
-            detailAssembly.configure(viewController: detailVC)
-            detailVC.modalPresentationStyle = .fullScreen
-            navigationController.pushViewController(detailVC, animated: true)
-        
         case .newCocktailVC:
             let newCocktailVC = NewCocktailViewController()
             let newCocktailAssembly = NewCocktailAssembly(navigationController: navigationController, authService: authService)
             newCocktailAssembly.configure(viewController: newCocktailVC)
             newCocktailVC.modalPresentationStyle = .formSheet
             navigationController.pushViewController(newCocktailVC, animated: true)
+        
+        case .detailsCocktailModelVC(item: let item, itemCore: let itemCore):
+            let detailVC = DetailsViewController()
+            let detailAssembly = DetailsViewAssembly(
+                navigationController: navigationController,
+                authService: authService,
+                item: item,
+                itemCore: itemCore
+            )
+            detailAssembly.configure(viewController: detailVC)
+            detailVC.modalPresentationStyle = .fullScreen
+            navigationController.pushViewController(detailVC, animated: true)
         }
     }
 }
