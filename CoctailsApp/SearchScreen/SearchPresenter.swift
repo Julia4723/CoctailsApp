@@ -12,7 +12,7 @@ protocol ISearchPresenter {
     func filterContentForSearchText(_ searchText: String)
     var cocktails: [Cocktail] { get }
     var cocktailsCore: [CocktailItem] { get }
-    func showScene(_ index: Int)
+    func showScene(_ index: Int, _ section: Int)
     func render()
 }
 
@@ -35,6 +35,17 @@ final class SearchPresenter {
 
 
 extension SearchPresenter: ISearchPresenter {
+    func showScene(_ index: Int, _ section: Int) {
+        if section == 0, index < filteredModel.count {
+            let item = filteredModel[index]
+            router.routeTo(target: BaseRouter.Target.detailsCocktailModelVC(item: item, itemCore: nil))
+        } else if section == 1, index < filteredModelCore.count {
+            let item = filteredModelCore[index]
+            router.routeTo(target: BaseRouter.Target.detailsCocktailModelVC(item: nil, itemCore: item))
+        }
+    }
+    
+    
     func filterContentForSearchText(_ searchText: String) {
         filteredModel = cocktails.filter {
             ($0.strDrink?.lowercased().contains(searchText.lowercased()) ?? false)
@@ -73,9 +84,7 @@ extension SearchPresenter: ISearchPresenter {
         view?.configure(items: cocktails, itemsCore: cocktailsCore)
     }
     
-    func showScene(_ index: Int) {
-        router.routeTo(target: BaseRouter.Target.detailsCocktailModelVC(item: filteredModel[index], itemCore: filteredModelCore[index]))
-    }
+    
     
 }
 

@@ -96,7 +96,7 @@ extension SearchViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        presenter.showScene(indexPath.row)
+        presenter.showScene(indexPath.row, indexPath.section)
     }
 }
 
