@@ -22,7 +22,6 @@ final class MainViewController: UITableViewController {
     private var coreItems: [CocktailItem] = []
     
     override func viewDidLoad(){
-        setupView()
         setupNavigationBar()
         setupTableView()
         presenter.render()
@@ -70,7 +69,7 @@ final class MainViewController: UITableViewController {
     }
     
     private func setupTableView() {
-        tableView.backgroundColor = .systemBackground
+        tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.register(MainViewCell.self, forCellReuseIdentifier: cellIdentifier)
     }
@@ -89,11 +88,6 @@ final class MainViewController: UITableViewController {
     }
 }
 
-private extension MainViewController {
-    func setupView() {
-        view.backgroundColor = .red
-    }
-}
 
 extension MainViewController {
     

@@ -49,11 +49,11 @@ private extension MainViewCell {
         customView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
-            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            customView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            customView.heightAnchor.constraint(equalToConstant: 360),
+            customView.heightAnchor.constraint(equalToConstant: 400),
         ])
     }
 }

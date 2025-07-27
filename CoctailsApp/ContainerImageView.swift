@@ -38,7 +38,7 @@ final class ContainerImageView: UIView {
     
     private func fetchImage(image: String) {
         let url = URL(string: image)
-        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 300))
+        let processor = ResizingImageProcessor(referenceSize: CGSize(width: 300, height: 250))
         imageView.kf.indicatorType = .activity
         
         imageView.kf.setImage(
