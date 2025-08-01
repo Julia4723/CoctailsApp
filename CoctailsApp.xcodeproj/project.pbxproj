@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CE813B932E2D503B002CA891 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE813B922E2D503B002CA891 /* CoreData.framework */; };
-		CE8D96F52E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D96F42E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift */; };
-		CE8D96F62E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D96F32E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift */; };
 		CE8D96F82E31F1DC000A7DC7 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CE8D96F72E31F1DC000A7DC7 /* Kingfisher */; };
 		CE9A1EB22E225AAC00B5E527 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB12E225AAC00B5E527 /* FirebaseAuth */; };
 		CE9A1EB42E225AAC00B5E527 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB32E225AAC00B5E527 /* FirebaseCore */; };
@@ -17,20 +15,21 @@
 		CE9A1EB82E225AAC00B5E527 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB72E225AAC00B5E527 /* FirebaseFirestore */; };
 		CE9A1EBA2E225AAC00B5E527 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EB92E225AAC00B5E527 /* FirebaseStorage */; };
 		CE9A1EBD2E225AC400B5E527 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CE9A1EBC2E225AC400B5E527 /* Alamofire */; };
+		CEA7B5B52E39F5C2007CA170 /* CocktailsCore+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA7B5B32E39F5C2007CA170 /* CocktailsCore+CoreDataClass.swift */; };
+		CEA7B5B62E39F5C2007CA170 /* CocktailsCore+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA7B5B42E39F5C2007CA170 /* CocktailsCore+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CE813B922E2D503B002CA891 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		CE8D96F32E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CocktailItem+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CE8D96F42E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CocktailItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CE9A1A982E0EE0EC00B5E527 /* CoctailsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoctailsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEA7B5B32E39F5C2007CA170 /* CocktailsCore+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CocktailsCore+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CEA7B5B42E39F5C2007CA170 /* CocktailsCore+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CocktailsCore+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		CE9A1AAA2E0EE0EE00B5E527 /* Exceptions for "CoctailsApp" folder in "CoctailsApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				CocktailsModel.xcdatamodeld,
 				Info.plist,
 			);
 			target = CE9A1A972E0EE0EC00B5E527 /* CoctailsApp */;
@@ -78,8 +77,8 @@
 		CE9A1A8F2E0EE0EC00B5E527 = {
 			isa = PBXGroup;
 			children = (
-				CE8D96F32E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift */,
-				CE8D96F42E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift */,
+				CEA7B5B32E39F5C2007CA170 /* CocktailsCore+CoreDataClass.swift */,
+				CEA7B5B42E39F5C2007CA170 /* CocktailsCore+CoreDataProperties.swift */,
 				CE9A1A9A2E0EE0EC00B5E527 /* CoctailsApp */,
 				CE813B912E2D503B002CA891 /* Frameworks */,
 				CE9A1A992E0EE0EC00B5E527 /* Products */,
@@ -180,8 +179,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE8D96F52E31EF27000A7DC7 /* CocktailItem+CoreDataProperties.swift in Sources */,
-				CE8D96F62E31EF27000A7DC7 /* CocktailItem+CoreDataClass.swift in Sources */,
+				CEA7B5B52E39F5C2007CA170 /* CocktailsCore+CoreDataClass.swift in Sources */,
+				CEA7B5B62E39F5C2007CA170 /* CocktailsCore+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

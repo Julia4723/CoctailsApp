@@ -23,7 +23,8 @@ extension NewCocktailAssembly: BaseAssembly {
         guard let newCocktailVC = viewController as? NewCocktailViewController else {return}
         
         let router = BaseRouter(navigationController: navigationController, authService: authService)
-        let presenter = NewCocktailPresenter(view: newCocktailVC, authService: authService, router: router)
+        let model = NewCocktailModel()
+        let presenter = NewCocktailPresenter(view: newCocktailVC, model: model, authService: authService, router: router)
         newCocktailVC.presenter = presenter
     }
 }

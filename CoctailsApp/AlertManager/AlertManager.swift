@@ -95,5 +95,12 @@ extension AlertManager {
     }
 }
 
+//MARK: - AddNewCocktail
+extension AlertManager {
+    public static func showBaseError(on vc: UIViewController, with message: String) {
+        showBasicAlert(on: vc, title: "Error", massage: message)
+    }
+}
+
 
 

@@ -8,9 +8,11 @@
 import UIKit
 
 protocol IMainViewController: AnyObject {
-    func showError(error: Error)
-    func configureCocktailModel(items: [Cocktail])
-    func configureCoreModel(items: [CocktailItem])
+    func showLoading()
+    func hideLoading()
+    func showError(_ message: String)
+    func showSuccess(_ message: String?)
+    func configure(items: [MainCocktailModel])
 }
 
 final class MainViewController: UITableViewController {
@@ -18,8 +20,7 @@ final class MainViewController: UITableViewController {
     var presenter: IMainPresenter!
     
     private let cellIdentifier = "cell"
-    private var items: [Cocktail] = []
-    private var coreItems: [CocktailItem] = []
+    private var allModels: [MainCocktailModel] = []
     
     override func viewDidLoad(){
         setupNavigationBar()
@@ -56,16 +57,26 @@ final class MainViewController: UITableViewController {
         )
         
         
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .white
+        let appearanceBig = UINavigationBarAppearance()
+        appearanceBig.configureWithOpaqueBackground()
+        appearanceBig.backgroundColor = .white
         
-        appearance.titleTextAttributes = [
+        appearanceBig.titleTextAttributes = [
             .foregroundColor: UIColor.black,
             .font: UIFont.systemFont(ofSize: 34, weight: .bold)
         ]
         
-        navigationController?.navigationBar.standardAppearance = appearance
+        let appearanceSmall = UINavigationBarAppearance()
+        appearanceSmall.configureWithOpaqueBackground()
+        appearanceSmall.backgroundColor = .white
+        
+        appearanceSmall.titleTextAttributes = [
+            .foregroundColor: UIColor.black,
+            .font: UIFont.systemFont(ofSize: 20, weight: .medium)
+        ]
+        
+        navigationController?.navigationBar.standardAppearance = appearanceBig
+        navigationController?.navigationBar.scrollEdgeAppearance = appearanceSmall
     }
     
     private func setupTableView() {
@@ -82,80 +93,75 @@ final class MainViewController: UITableViewController {
     @objc private func reloadCoreData() {
         presenter.fetchFromCore()
     }
-    
-    private var allModels: [Any] {
-        return coreItems + items
-    }
 }
 
 
 extension MainViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return items.count
-        case 1:
-            return coreItems.count
-        default:
-            return 0
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Онлайн коктейли"
-        case 1:
-            return "Сохранённые коктейли"
-        default:
-            return nil
-        }
+        return allModels.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MainViewCell else {return UITableViewCell()}
-        
-        if indexPath.section == 0 {
-            let item = items[indexPath.row]
-            cell.configureCocktailModel(model: item)
-        } else {
-            let item = coreItems[indexPath.row]
-            cell.configureCoreModel(model: item)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MainViewCell else {
+            return UITableViewCell()
         }
+        
+        let item = allModels[indexPath.row]
+        switch item {
+        case .online(let cocktail):
+            cell.configureCocktailModel(model: cocktail)
+        case .save(let saved):
+            cell.configureCoreModel(model: saved)
+        }
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        presenter.showScene(indexPath.row, indexPath.section)
+        presenter.showScene(indexPath.row)
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete && indexPath.section == 1 {
-            presenter.deleteCoreItem(at: indexPath)
-            
+        let item = allModels[indexPath.row]
+        guard editingStyle == .delete else { return }
+        if case .save(_) = item {
+            presenter.deleteCoreItem(at: IndexPath(row: indexPath.row, section: 0))
         }
     }
 }
 
 
-extension MainViewController: IMainViewController {
-    func configureCoreModel(items: [CocktailItem]) {
-        self.coreItems = items
-        tableView.reloadData()
+extension MainViewController: IMainViewController, UIStateManagerViewProtocol, UIStateManagerProtocol {
+    
+    var containerView: UIView {
+        return view
     }
     
-    func configureCocktailModel(items: [Cocktail]) {
-        self.items = items
-        tableView.reloadData()
+    func showLoading() {
+        uiStateManager.showLoading()
     }
     
-    func showError(error: any Error) {
-        print(error)
+    func hideLoading() {
+        uiStateManager.hideLoading()
+    }
+    
+    func showError(_ message: String) {
+        uiStateManager.showError(message)
+    }
+    
+    func showSuccess(_ message: String?) {
+        uiStateManager.showSuccess(message)
+    }
+    
+    
+    func configure(items: [MainCocktailModel]) {
+        self.allModels = items
+        tableView.reloadData()
     }
 }

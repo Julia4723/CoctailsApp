@@ -10,17 +10,19 @@ import UIKit
 protocol INewCocktailPresenter {
     func save(title: String, instruction: String, imageView: UIImage?)
     func closeAddNewCocktailScreen()
+    func validateInput(title: String, instruction: String) -> Bool
 }
 
 
 final class NewCocktailPresenter {
     private weak var view: INewCocktailViewController!
-    
+    private let model: INewCocktailModel
     private let authService: AuthService
     private let router: IBaseRouter
   
-    init(view: INewCocktailViewController, authService: AuthService, router: IBaseRouter) {
+    init(view: INewCocktailViewController, model: INewCocktailModel, authService: AuthService, router: IBaseRouter) {
         self.view = view
+        self.model = model
         self.authService = authService
         self.router = router
        
@@ -29,20 +31,35 @@ final class NewCocktailPresenter {
 
 
 extension NewCocktailPresenter: INewCocktailPresenter {
-    func save(title: String, instruction: String, imageView: UIImage?) {
-        print("Saving cocktail: \(title), \(instruction)")
-        let context = CoreDataManager.shared.persistentContainer.viewContext
-        let item = CocktailItem(context: context)
-        item.title = title
-        item.instruction = instruction
-        
-        if let image = imageView, let data = image.jpegData(compressionQuality: 0.8) {
-            item.imageData = data
+    func validateInput(title: String, instruction: String) -> Bool {
+        let validation = model.validateCocktail(title: title, instruction: instruction)
+        if !validation.isValid {
+            view.showError(validation.errors.joined(separator: "\n"))
         }
+        return validation.isValid
+    }
+    
+    func save(title: String, instruction: String, imageView: UIImage?) {
+        view.showLoading()
         
-        CoreDataManager.shared.saveContext()
-        NotificationCenter.default.post(name: .didAddNewCocktail, object: nil)
-        
+        Task {
+            do {
+                try await model.saveCocktail(title: title, instruction: instruction, image: imageView)
+                
+                await MainActor.run {
+                    view.hideLoading()
+                    view.showSuccess("Done!")
+                    
+                    NotificationCenter.default.post(name: .didAddNewCocktail, object: nil)
+                    closeAddNewCocktailScreen()
+                }
+            } catch {
+                await MainActor.run {
+                    view.hideLoading()
+                    view.showError(error.localizedDescription)
+                }
+            }
+        }
     }
     
     func closeAddNewCocktailScreen() {

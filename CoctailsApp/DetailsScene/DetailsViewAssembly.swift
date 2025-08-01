@@ -11,14 +11,12 @@ import UIKit
 final class DetailsViewAssembly {
     private let navigationController: UINavigationController
     private let authService: AuthService
-    private let item: Cocktail?
-    private let itemCore: CocktailItem?
+    private let item: MainCocktailModel
     
-    init(navigationController: UINavigationController,  authService: AuthService, item: Cocktail?, itemCore: CocktailItem?) {
+    init(navigationController: UINavigationController,  authService: AuthService, item: MainCocktailModel) {
         self.navigationController = navigationController
         self.authService = authService
         self.item = item
-        self.itemCore = itemCore
     }
 }
 
@@ -28,10 +26,8 @@ extension DetailsViewAssembly: BaseAssembly {
         guard let detailsVC = viewController as? DetailsViewController else {return}
         
         let router = BaseRouter(navigationController: navigationController, authService: authService)
-        let presenter = DetailsViewPresenter(view: detailsVC, authService: authService, router: router, model: item, modelCore: itemCore)
+        let presenter = DetailsViewPresenter(view: detailsVC, authService: authService, router: router, allModels: item)
         detailsVC.presenter = presenter
         
     }
-    
-    
 }

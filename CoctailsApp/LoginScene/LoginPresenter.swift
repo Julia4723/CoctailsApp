@@ -37,16 +37,16 @@ extension LoginPresenter: ILoginPresenter {
     }
     
     func login(email: String, password: String) {
+        view.showLoading()
         authService.signIn(with: LoginUserRequest(email: email, password: password)) { [weak self] error in
             DispatchQueue.main.async {
-                guard let self = self else { return }
+                self?.view.hideLoading()
                 if let error = error {
-                    if let viewController = self.view as? UIViewController {
-                        AlertManager.showSignInAlert(on: viewController, with: error)
-                    }
+                    self?.view.showError(error.localizedDescription)
                     return
                 }
-                self.router.routeTo(target: BaseRouter.Target.main)
+                self?.view.showSuccess("Login successful!")
+                self?.router.routeTo(target: BaseRouter.Target.main)
             }
         }
     }

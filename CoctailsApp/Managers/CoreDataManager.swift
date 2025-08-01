@@ -38,11 +38,12 @@ final class CoreDataManager {
     
     func delete(_ object: NSManagedObject) {
         persistentContainer.viewContext.delete(object)
+        print("Deleted item")
         saveContext()
     }
     
     func fetch() {
-        let request: NSFetchRequest<CocktailItem> = CocktailItem.fetchRequest()
+        let request: NSFetchRequest<CocktailsCore> = CocktailsCore.fetchRequest()
         do {
             let notes = try persistentContainer.viewContext.fetch(request)
             print(notes)

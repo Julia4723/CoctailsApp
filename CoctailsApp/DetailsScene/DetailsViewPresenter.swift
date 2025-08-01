@@ -9,9 +9,10 @@ import UIKit
 
 struct DetailsModel {
     let image: String?
-    let imageCore: Data?
+   // let imageCore: Data?
     let title: String?
     let instruction: String?
+    let ingredients: [String]?
 }
 
 protocol IDetailsViewPresenter {
@@ -24,29 +25,25 @@ final class DetailsViewPresenter {
     private weak var view: IDetailsViewController!
     private let authService: AuthService
     private let router: IBaseRouter
-    private let model: Cocktail?
-    private let modelCore: CocktailItem?
+    private let allModels: MainCocktailModel
+    //private let model: Cocktail
+    //private let modelCore: CocktailItem?
     
-    init(view: IDetailsViewController, authService: AuthService, router: IBaseRouter, model: Cocktail?, modelCore: CocktailItem?) {
+    init(view: IDetailsViewController, authService: AuthService, router: IBaseRouter, allModels: MainCocktailModel) {
         self.view = view
         self.authService = authService
         self.router = router
-        self.model = model
-        self.modelCore = modelCore
+        self.allModels = allModels
     }
     
     private func getDetails() -> DetailsModel {
-        if let model = model {
-            return DetailsModel(image: model.strDrinkThumb, imageCore: nil, title: model.strDrink, instruction: model.strInstructions)
-        } else if let modelCore = modelCore {
-            return DetailsModel(image: nil, imageCore: modelCore.imageData, title: modelCore.title, instruction: modelCore.instruction)
-        } else {
-            return DetailsModel(image: nil, imageCore: nil, title: nil, instruction: nil)
-        }
+       
+        return DetailsModel(image: allModels.imageURLString, title: allModels.title, instruction: allModels.instructions, ingredients: allModels.cocktailIngredients)
+        
     }
     
     private func getIngredients() -> [String] {
-        let arrayIngredients: [String] = model?.ingredients ?? []
+        let arrayIngredients: [String] = allModels.cocktailIngredients ?? []
         return arrayIngredients
     }
 }

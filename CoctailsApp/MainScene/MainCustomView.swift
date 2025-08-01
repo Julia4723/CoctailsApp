@@ -38,9 +38,9 @@ final class MainCustomView: UIView {
         
     }
     
-    func configureCoreModel(model: CocktailItem) {
-        titleLabel.text = model.title
+    func configureCoreModel(model: CocktailsCore) {
         descriptionLabel.text = model.instruction
+        titleLabel.text = model.title
         if let data = model.imageData {
             imageView.configureData(data: data)
         }

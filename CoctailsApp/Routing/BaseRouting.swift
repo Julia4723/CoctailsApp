@@ -15,8 +15,8 @@ final class BaseRouter {
         case main
         case popToRoot
         case signUpVC
-        case detailsCocktailModelVC(item: Cocktail?, itemCore: CocktailItem?)
-       // case detailsCoreModelVC(item: CocktailItem)
+        //case detailsCocktailModelVC(item: Cocktail?, itemCore: CocktailItem?)
+        case detailsCoreModelVC(item: MainCocktailModel)
         case newCocktailVC
     }
     
@@ -66,18 +66,25 @@ extension BaseRouter: IBaseRouter {
             newCocktailAssembly.configure(viewController: newCocktailVC)
             newCocktailVC.modalPresentationStyle = .formSheet
             navigationController.pushViewController(newCocktailVC, animated: true)
+            
+        case .detailsCoreModelVC(item: let item):
+            let DetailsVC = DetailsViewController()
+            let detailAssembly = DetailsViewAssembly(navigationController: navigationController, authService: authService, item: item)
+            detailAssembly.configure(viewController: DetailsVC)
+            DetailsVC.modalPresentationStyle = .fullScreen
+            navigationController.pushViewController(DetailsVC, animated: true)
         
-        case .detailsCocktailModelVC(item: let item, itemCore: let itemCore):
-            let detailVC = DetailsViewController()
-            let detailAssembly = DetailsViewAssembly(
-                navigationController: navigationController,
-                authService: authService,
-                item: item,
-                itemCore: itemCore
-            )
-            detailAssembly.configure(viewController: detailVC)
-            detailVC.modalPresentationStyle = .fullScreen
-            navigationController.pushViewController(detailVC, animated: true)
+//        case .detailsCocktailModelVC(item: let item, itemCore: let itemCore):
+//            let detailVC = DetailsViewController()
+//            let detailAssembly = DetailsViewAssembly(
+//                navigationController: navigationController,
+//                authService: authService,
+//                item: item,
+//                itemCore: itemCore
+//            )
+//            detailAssembly.configure(viewController: detailVC)
+//            detailVC.modalPresentationStyle = .fullScreen
+//            navigationController.pushViewController(detailVC, animated: true)
         }
     }
 }

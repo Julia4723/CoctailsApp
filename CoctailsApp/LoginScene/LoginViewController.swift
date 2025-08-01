@@ -8,7 +8,10 @@
 import UIKit
 
 protocol ILoginViewController: AnyObject {
-    
+    func showLoading()
+    func hideLoading()
+    func showError(_ message: String)
+    func showSuccess(_ message: String?)
 }
 
 final class LoginViewController: UIViewController {
@@ -74,7 +77,7 @@ private extension LoginViewController {
             registrationButton
         )
     }
-
+    
     
     @objc private func loginButtonTapped() {
         print("Login Button tapped")
@@ -143,6 +146,25 @@ private extension LoginViewController {
 }
 
 
-extension LoginViewController: ILoginViewController {
+extension LoginViewController: ILoginViewController, UIStateManagerViewProtocol, UIStateManagerProtocol {
     
+    var containerView: UIView {
+        return view
+    }
+    
+    func showSuccess(_ message: String?) {
+        uiStateManager.showSuccess(message)
+    }
+    
+    func showLoading() {
+        uiStateManager.showLoading()
+    }
+    
+    func hideLoading() {
+        uiStateManager.hideLoading()
+    }
+    
+    func showError(_ message: String) {
+        uiStateManager.showError(message)
+    }
 }

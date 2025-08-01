@@ -8,9 +8,10 @@
 import UIKit
 
 protocol INewCocktailViewController: AnyObject {
-    
-    
-    
+    func showLoading()
+    func hideLoading()
+    func showError(_ message: String)
+    func showSuccess(_ message: String?)
 }
 
 
@@ -30,6 +31,10 @@ final class NewCocktailViewController: UIViewController {
         setupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
 }
 
 extension NewCocktailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -77,13 +82,20 @@ extension NewCocktailViewController {
     
     @objc private func buttonSaveTapped() {
         print("Save button pressed")
+        
+        let title = textFieldName.text ?? ""
+        let instruction = textFieldInstruction.text ?? ""
+        
+        guard presenter?.validateInput(title: title, instruction: instruction) == true else {
+            return
+        }
+        
         presenter?.save(
             title: textFieldName.text ?? "",
             instruction: textFieldInstruction.text ?? "",
             imageView: addImage.image
             
         )
-        presenter?.closeAddNewCocktailScreen()
     }
     
     @objc private func buttonCloseTapped() {
@@ -137,6 +149,24 @@ extension NewCocktailViewController {
 
 
 
-extension NewCocktailViewController: INewCocktailViewController {
+extension NewCocktailViewController: INewCocktailViewController, UIStateManagerProtocol, UIStateManagerViewProtocol {
+    func showLoading() {
+        uiStateManager.showLoading()
+    }
     
+    func hideLoading() {
+        uiStateManager.hideLoading()
+    }
+    
+    func showError(_ message: String) {
+        uiStateManager.showError(message)
+    }
+    
+    func showSuccess(_ message: String?) {
+        uiStateManager.showSuccess(message)
+    }
+    
+    var containerView: UIView {
+        return view
+    }
 }

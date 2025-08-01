@@ -35,6 +35,11 @@ final class DetailsViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.heightAnchor.constraint(equalToConstant: tableView.contentSize.height).isActive = true
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
 
     
     private func setupTableView() {
@@ -138,6 +143,6 @@ extension DetailsViewController: IDetailsViewController {
         titleText.text = item.title
         instructionText.text = item.instruction
         imageView.configure(urlImage: item.image ?? "")
-        imageView.configureData(data: item.imageCore)
+        //imageView.configureData(data: item.imageCore)
     }
 }

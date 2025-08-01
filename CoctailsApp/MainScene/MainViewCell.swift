@@ -29,7 +29,7 @@ final class MainViewCell: UITableViewCell {
         customView.configureCocktailModel(model: model)
     }
     
-    func configureCoreModel(model: CocktailItem) {
+    func configureCoreModel(model: CocktailsCore) {
         customView.configureCoreModel(model: model)
     }
 }
