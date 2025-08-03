@@ -26,13 +26,15 @@ final class TabBarPresenter {
     private let navigationController: UINavigationController
     private let authService: AuthService
     private let network: INetworkManager
+    private let favoriteManager: IFavoriteManager
 
-    init(view: ITabBarViewController, router: IBaseRouter, navigationController: UINavigationController, authService: AuthService, network: INetworkManager) {
+    init(view: ITabBarViewController, router: IBaseRouter, navigationController: UINavigationController, authService: AuthService, network: INetworkManager, favoriteManager: IFavoriteManager) {
         self.view = view
         self.router = router
         self.navigationController = navigationController
         self.authService = authService
         self.network = network
+        self.favoriteManager = favoriteManager
     }
 }
 
@@ -43,12 +45,12 @@ extension TabBarPresenter: ITabBarViewPresenter {
     func getTabBarItems() {
         // Сборка Main
         let mainVC = MainViewController()
-        let mainAssembly = MainAssembly(navigationController: navigationController, authService: authService, network: network)
+        let mainAssembly = MainAssembly(navigationController: navigationController, authService: authService, network: network, favoriteManager: favoriteManager)
         mainAssembly.configure(viewController: mainVC)
         let mainNav = UINavigationController(rootViewController: mainVC)
 
         
-        // Сборка Search (если появится Assembly, заменить)
+        // Сборка Search
         let searchVC = SearchViewController()
         let searchAssembly = SearchAccembly(navigationController: navigationController, authService: authService, network: network)
         searchAssembly.configure(viewController: searchVC)
@@ -60,6 +62,11 @@ extension TabBarPresenter: ITabBarViewPresenter {
         let profileAssembly = ProfileAssembly(navigationController: navigationController, authService: authService)
         profileAssembly.configure(viewController: profileVC)
         let profileNav = UINavigationController(rootViewController: profileVC)
+        
+        let favoriteVC = FavoriteViewController()
+        let favoriteAssembly = FavoriteAssembly(navigationController: navigationController, authService: authService, favoriteManager: favoriteManager)
+        favoriteAssembly.configure(viewController: favoriteVC)
+        let favoriteNav = UINavigationController(rootViewController: favoriteVC)
 
         let items: [TabBarItemInfo] = [
             TabBarItemInfo(
@@ -76,7 +83,13 @@ extension TabBarPresenter: ITabBarViewPresenter {
                 viewController: profileNav,
                 title: "Profile",
                 icon: UIImage(systemName: "person.fill")
+            ),
+            TabBarItemInfo(
+                viewController: favoriteNav,
+                title: "Favorite",
+                icon: UIImage(systemName: "heart.fill")
             )
+            
         ]
         
         let navigationController = UINavigationController()

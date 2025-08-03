@@ -13,8 +13,8 @@ enum TabsAssembly {
     case mainVC
     case searchVC
     case profileVC
-    
-    static let allTabs = [mainVC, searchVC, profileVC]
+    case favoriteVC
+    static let allTabs = [mainVC, searchVC, profileVC, favoriteVC]
 }
 
 protocol ITabBarViewController: AnyObject {

@@ -119,6 +119,17 @@ extension MainViewController {
             cell.configureCoreModel(model: saved)
         }
         
+        // Передаем FavoriteManager в ячейку
+        if let presenter = presenter as? MainPresenter {
+            cell.favoriteManager = presenter.favoriteManager
+        }
+        
+        // Настраиваем обработчик нажатия на кнопку like
+        cell.action = { [weak self] _ in
+            print("🎯 MainViewController: Action triggered for index \(indexPath.row)")
+            self?.presenter.toggleFavorite(at: indexPath.row)
+        }
+        
         return cell
     }
     

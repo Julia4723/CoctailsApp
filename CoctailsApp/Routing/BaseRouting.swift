@@ -22,11 +22,11 @@ final class BaseRouter {
     
     private let navigationController: UINavigationController
     private let authService: AuthService
-   
+    
     init(navigationController: UINavigationController, authService: AuthService) {
         self.navigationController = navigationController
         self.authService = authService
-       
+        
     }
 }
 

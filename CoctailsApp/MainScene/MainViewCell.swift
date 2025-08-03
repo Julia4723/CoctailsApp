@@ -10,6 +10,8 @@ import UIKit
 final class MainViewCell: UITableViewCell {
     
     private let customView = MainCustomView()
+    var action: ((UITableViewCell) -> ())?
+    var favoriteManager: IFavoriteManager?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,11 +28,23 @@ final class MainViewCell: UITableViewCell {
     }
     
     func configureCocktailModel(model: Cocktail) {
-        customView.configureCocktailModel(model: model)
+        customView.configureCocktailModel(model: model, favoriteManager: favoriteManager)
+        customView.actionButton = favoriteButtonTapped
     }
     
     func configureCoreModel(model: CocktailsCore) {
-        customView.configureCoreModel(model: model)
+        customView.configureCoreModel(model: model, favoriteManager: favoriteManager)
+        customView.actionButton = favoriteButtonTapped
+    }
+    
+    func configureFavoriteModel(model: FavoriteViewModel) {
+        customView.configureFavoriteModel(model: model)
+        customView.actionButton = favoriteButtonTapped
+    }
+    
+    private func favoriteButtonTapped() {
+        print("💝 MainViewCell: favoriteButtonTapped called")
+        action?(self)
     }
 }
 

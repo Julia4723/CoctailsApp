@@ -13,7 +13,7 @@ protocol IFavoriteViewController: AnyObject {
 
 
 final class FavoriteViewController: UITableViewController {
-    var presener: IFavoritePresenter?
+    var presenter: IFavoritePresenter?
     
     private let cellIdentifier = "cell"
     private var items: [FavoriteViewModel] = []
@@ -22,11 +22,31 @@ final class FavoriteViewController: UITableViewController {
         super.viewDidLoad()
         setupTableView()
         setupNavigationBar()
+        
+        // Слушаем уведомления об обновлении данных
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateFavoriteModels),
+            name: NSNotification.Name("UpdateFavoriteModels"),
+            object: nil
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = false
+        
+        // Запрашиваем обновление данных при появлении экрана
+        NotificationCenter.default.post(
+            name: NSNotification.Name("RequestFavoriteModels"),
+            object: nil
+        )
+    }
+    
+    @objc private func updateFavoriteModels(_ notification: Notification) {
+        if let models = notification.object as? [MainCocktailModel] {
+            presenter?.updateWithAllModels(models)
+        }
     }
     
     private func setupNavigationBar() {
@@ -49,8 +69,6 @@ final class FavoriteViewController: UITableViewController {
         
         navigationController?.navigationBar.standardAppearance = appearance
     }
-    
-    
 }
 
 extension FavoriteViewController {
@@ -62,10 +80,23 @@ extension FavoriteViewController {
 }
 
 
-extension FavoriteViewController: IFavoriteViewController {
-    func configure(items: [FavoriteViewModel]) {
-        //
+extension FavoriteViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        items.count
+        
     }
     
-    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MainViewCell else {return UITableViewCell()}
+        let item = items[indexPath.row]
+        cell.configureFavoriteModel(model: item)
+        return cell
+    }
+}
+
+extension FavoriteViewController: IFavoriteViewController {
+    func configure(items: [FavoriteViewModel]) {
+        self.items = items
+        tableView.reloadData()
+    }
 }

@@ -44,7 +44,6 @@ final class NewCocktailModel: INewCocktailModel {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let context = CoreDataManager.shared.persistentContainer.viewContext
-                    //let context = self.coreDataManager.persistentContainer.viewContext
                     let item = CocktailsCore(context: context)
                     item.title = title
                     item.instruction = instruction

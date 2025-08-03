@@ -13,7 +13,12 @@ final class MainCustomView: UIView {
     private let descriptionLabel = UILabel()
     private var imageView = ContainerImageView()
     private var imageFromCoreData = UIImage()
-    private let like = UIImageView(image: UIImage(systemName: "heart"))
+    //private let like = UIImageView(image: UIImage(systemName: "heart"))
+    private let like = UIButton()
+    private var isFavorite = false
+    private var favoriteManager: IFavoriteManager?
+    
+    var actionButton: (() -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,23 +33,49 @@ final class MainCustomView: UIView {
         titleLabel.text = nil
         descriptionLabel.text = nil
         imageView.prepareForReuse()
+        isFavorite = false
+        updateLikeButton()
     }
     
-    func configureCocktailModel(model: Cocktail) {
+    func configureCocktailModel(model: Cocktail, favoriteManager: IFavoriteManager? = nil) {
         titleLabel.text = model.strDrink
         descriptionLabel.text = model.strCategory
         imageView.configure(urlImage: model.strDrinkThumb ?? "")
-        
-        
+        self.favoriteManager = favoriteManager
+        updateFavoriteState(for: .online(model))
     }
     
-    func configureCoreModel(model: CocktailsCore) {
+    func configureCoreModel(model: CocktailsCore, favoriteManager: IFavoriteManager? = nil) {
         descriptionLabel.text = model.instruction
         titleLabel.text = model.title
         if let data = model.imageData {
             imageView.configureData(data: data)
         }
+        self.favoriteManager = favoriteManager
+        updateFavoriteState(for: .save(model))
     }
+    
+    func configureFavoriteModel(model: FavoriteViewModel) {
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        imageView.configure(urlImage: model.image)
+        isFavorite = model.isFavorite
+        updateLikeButton()
+    }
+    
+    private func updateFavoriteState(for cocktail: MainCocktailModel) {
+        if let favoriteManager = favoriteManager {
+            isFavorite = favoriteManager.isFavorite(cocktail)
+        }
+        updateLikeButton()
+    }
+    
+    private func updateLikeButton() {
+        let favoriteImage = isFavorite ? "heart.fill" : "heart"
+        like.setImage(UIImage(systemName: favoriteImage), for: .normal)
+        like.tintColor = isFavorite ? .red : .gray
+    }
+    
 }
 
 
@@ -55,6 +86,7 @@ private extension MainCustomView {
         setupTitleLabel()
         setupDescription()
         setupImage()
+        setupLikeButton()
         setupLayout()
     }
     
@@ -94,6 +126,18 @@ private extension MainCustomView {
         imageView.layer.cornerRadius = 12
     }
     
+    func setupLikeButton() {
+        like.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        updateLikeButton()
+    }
+    
+    @objc func likeButtonTapped() {
+        print("💖 MainCustomView: likeButtonTapped called")
+        isFavorite.toggle()
+        updateLikeButton()
+        print("💖 MainCustomView: Calling actionButton")
+        actionButton?()
+    }
 }
 
 private extension MainCustomView {

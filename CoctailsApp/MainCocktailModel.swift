@@ -66,6 +66,10 @@ enum MainCocktailModel {
         }
     }
     
+    func isFavoriteCocktail(favoriteManager: IFavoriteManager) -> Bool {
+        return favoriteManager.isFavorite(self)
+    }
+    
     var cocktailModel: Cocktail? {
         if case let .online(cocktail) = self {
             return cocktail

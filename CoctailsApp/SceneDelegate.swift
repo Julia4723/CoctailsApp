@@ -46,6 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Если это TabBarController, настраиваем его через Assembly
             if let tabBarController = viewController as? TabBarController {
                 let authService = AuthService()
+                
                 let tabBarAssembly = TabBarAssembly(navigationController: nav, authService: authService)
                 tabBarAssembly.configure(viewController: tabBarController)
             }

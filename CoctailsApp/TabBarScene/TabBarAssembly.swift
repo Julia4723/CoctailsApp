@@ -9,7 +9,7 @@ import UIKit
 final class TabBarAssembly {
     private let navigationController: UINavigationController
     private let authService: AuthService
-   
+    
     init(navigationController: UINavigationController, authService: AuthService) {
         self.navigationController = navigationController
         self.authService = authService
@@ -26,7 +26,8 @@ extension TabBarAssembly: BaseAssembly {
 
         let router = BaseRouter(navigationController: navigationController, authService: authService)
         let network = NetworkManager.shared
-        let presenter = TabBarPresenter(view: tabBarVC, router: router, navigationController: navigationController, authService: authService, network: network)
+        let favoriteManager = FavoriteManager()
+        let presenter = TabBarPresenter(view: tabBarVC, router: router, navigationController: navigationController, authService: authService, network: network, favoriteManager: favoriteManager)
         
         tabBarVC.presenter = presenter
 
